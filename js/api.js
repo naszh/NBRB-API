@@ -1,12 +1,20 @@
 const baseUrl = 'https://www.nbrb.by/api/exrates/';
 
-fetch(`${baseUrl}currencies`)
+
+  fetch(`${baseUrl}currencies`)
   .then(response => response.json())
   .then(parseData)
-  .then(addToSelect);
+
+
+  .then(addToSelect)
+  // .then(validateForm)
+  // .then(getValues)
+  // .then(data => console.log(data))
+  // .then(getRates);
+
+  const set = new Set();
 
 function parseData(resp) {
-  const set = new Set();
 
   const obj = resp
   .map(({
@@ -51,8 +59,83 @@ function parseData(resp) {
 };
 
 // ====================================
+// fetch(`${baseUrl}rates/${id}?ondate=${date}`)
+// fetch(`${baseUrl}rates/dynamics/${id}?startdate=${start}&enddate=${end}`)
 
+// console.log(acc)
+function getValues(arrCurrs) {
+  [...arrCurrs].forEach(curr => {
+    // console.log(curr);
+    // console.log(select.value);
 
-function splitDate() {
+    // select.addEventListener('input', () => {
+    //   if (select.value === curr.name) {
+        // console.log(curr)
+        // console.log(fromDate)
+        // console.log(toDate)
+        document.querySelectorAll('.value').forEach(el => el.addEventListener('change', () => {
+        if (fromDate.value != '' && select.value === curr.name) {
+          if (fromDate.valueAsDate.getTime() === toDate.valueAsDate.getTime()) {
+            getOnDate(curr.currs, fromDate)
+
+          } else if (fromDate.valueAsDate.getFullYear() >= 1991 && fromDate.valueAsDate.getTime() != toDate.valueAsDate.getTime()) {
+            splitDate(curr.currs, fromDate, toDate)
+          }
+          // console.log(curr)
+        }
+      }))
+      })
+    }
+
+//   })
+// }
+
+function getOnDate(curr, fromDate) {
+  // console.log(curr)
+  // console.log(...curr, fromDate);
+  [...curr].forEach(el => {
+    if (fromDate.valueAsDate.getTime() <= (new Date(el.dateE).getTime()) && 
+      fromDate.valueAsDate.getTime() >= (new Date(el.dateS).getTime())) {
+        console.log(el)
+
+        fetch(`${baseUrl}rates/${el.id}?ondate=${fromDate}`)
+          .then(response => response.json())
+          .then(data => data.Cur_OfficialRate)
+          .then(console.log)
+      }
+  })
+}
+
+function splitDate (curr, fromDate, toDate) {
+  console.log(curr, fromDate, toDate)
+  curr.forEach(el => {
+    console.log(el)
+    if (fromDate.valueAsDate.getFullYear() === toDate.valueAsDate.getFullYear()
+    && fromDate.valueAsDate.getTime() >= (new Date(el.dateS).getTime())
+    && toDate.valueAsDate.getTime() <= (new Date(el.dateE).getTime())
+    ) {
+      fetch(`${baseUrl}rates/dynamics/${el.id}?startdate=${fromDate.value}&enddate=${toDate.value}`)
+      .then(response => response.json())
+      .then(getInDyn)
+    }
+
+    // if (fromDate.valueAsDate.getFullYear() != toDate.valueAsDate.getFullYear()
+    // && fromDate.valueAsDate.getFullYear() >= (new Date(el.dateS).getFullYear()
+    // // && fromDate.valueAsDate.getTime() >= (new Date(el.dateS).getTime())
+    // && toDate.valueAsDate.getFullYear() <= (new Date(el.dateE).getFullYear())
+    
+    
+
+  })
   
+}
+
+function getInDyn(data) {
+  // console.log(...data)
+  const arrRates = [];
+  [...data].forEach(data => {
+    arrRates.push(data.Cur_OfficialRate)
+    return arrRates
+  })
+  console.log(arrRates)
 }

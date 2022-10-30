@@ -1,4 +1,5 @@
 const main = document.querySelector('main');
+
 const select = document.querySelector('#curr');
 const fromDate = document.querySelector('#fromDate');
 const toDate = document.querySelector('#toDate');
@@ -15,9 +16,9 @@ window.addEventListener('DOMContentLoaded', function () {
 
   var year = d.getFullYear();
 
-  fromDate.value = `${year}-${month}-${day}`;
+  // fromDate.value = `${year}-${month}-${day}`;
   toDate.value = `${year}-${month}-${day}`;
-  fromDate.setAttribute('max', `${year}-${month}-${day}`);
+  // fromDate.setAttribute('max', `${year}-${month}-${day}`);
   toDate.setAttribute('max', `${year}-${month}-${day}`);
 }, false);
 
@@ -34,6 +35,11 @@ function addToSelect(curr) {
     option.value = `${name}`;
     select.add(option);
   };
+
+  // getSelect(select);
+  validateForm()
+  getValues(curr)
+  return curr;
 };
 
 function validateForm() {
@@ -48,8 +54,14 @@ function validateForm() {
     } else {
       !document.querySelector('.tooltip') || 
       document.querySelectorAll('.tooltip').forEach(el => el.remove());
+
+      // getValues(fromDate, toDate);
+      // getSelect(select)
     };
   }));
+
+  // select.addEventListener('input', getValues)
+
 };
 
-validateForm()
+// validateForm()

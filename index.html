@@ -10,12 +10,17 @@
 <body>
     <main>
         <form action="#">
-            <select name="currency" id="curr"></select>
-            <input type="date" name="from" id="fromDate" min="1991-01-01">
-            <input type="date" name="to" id="toDate" min="1991-01-01">
+            <select id="curr" class='value'>
+                <option>Выберите валюту</option>
+            </select>
+            <input type="date" name="from" id="fromDate" class='value' min="1991-01-01">
+            <input type="date" name="to" id="toDate" class='value' min="1991-01-01">
         </form>
     </main>
+    <div id="container"></div>
     <script src="/js/form.js"></script>
     <script src="/js/api.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="/js/chart.js"></script>
 </body>
 </html>
