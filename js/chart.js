@@ -21,7 +21,10 @@ function prepareDataForChart(data) {
     });
   };
   arrData.push(dataConcat);
-  addChart(arrData);
+
+  (arrData[0].length === 0) 
+    ? document.querySelector('#container').innerHTML = 'There is no exchange rate on the requested date.' 
+    : addChart(arrData);
 }
 
 function addChart(arrData) {

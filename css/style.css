@@ -1,0 +1,9 @@
+#container {
+  height: 500px;
+  width: 65%;
+  margin: 15px auto;
+}
+
+.tooltip {
+  color: crimson;
+}

@@ -5,7 +5,6 @@ const fromDate = document.querySelector('#fromDate');
 const toDate = document.querySelector('#toDate');
 const form = document.querySelector('form');
 
-
 window.addEventListener('DOMContentLoaded', function () {
   var d = new Date();
   var day = d.getDate(); 
@@ -42,17 +41,7 @@ function addToSelect(curr) {
 function validateForm() {
   document.querySelectorAll('input').forEach(el => el.addEventListener('change', () => {
     if (fromDate.valueAsDate.getTime() > toDate.valueAsDate.getTime()) {
-      if (!document.querySelector('.tooltip')) {
-        const tip = document.createElement('div');
-        tip.className = 'tooltip';
-        tip.innerHTML = 'Error! The start date must be less than the end date.';
-        form.append(tip); 
-        document.querySelector('#container').style.display = 'none';
-      };
-    } else {
-      !document.querySelector('.tooltip') || 
-      document.querySelectorAll('.tooltip').forEach(el => el.remove());
-      document.querySelector('#container').style.display = 'block';
+      document.querySelector('#container').innerHTML = 'Error! The start date must be less than the end date.'
     };
   }));
 };

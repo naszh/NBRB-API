@@ -64,6 +64,7 @@ function getValues(arrCurrs) {
       };
     }));
   });
+  validateForm();
 };
 
 function getOnDate(curr, fromDate) {
@@ -88,7 +89,8 @@ function getForYear (curr, fromDate, toDate) {
       fetch(`${baseUrl}rates/dynamics/${el.id}?startdate=${fromDate.value}&enddate=${toDate.value}`)
         .then(response => response.json())
         .then(prepareDataForChart)
-    } else {
+    } 
+    else {
       document.querySelector('#container').innerHTML = 'There is no exchange rate on the requested date.';
     };
   });
