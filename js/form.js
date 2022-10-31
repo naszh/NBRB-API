@@ -16,9 +16,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
   var year = d.getFullYear();
 
-  // fromDate.value = `${year}-${month}-${day}`;
   toDate.value = `${year}-${month}-${day}`;
-  // fromDate.setAttribute('max', `${year}-${month}-${day}`);
   toDate.setAttribute('max', `${year}-${month}-${day}`);
 }, false);
 
@@ -36,9 +34,8 @@ function addToSelect(curr) {
     select.add(option);
   };
 
-  // getSelect(select);
-  validateForm()
-  getValues(curr)
+  validateForm();
+  getValues(curr);
   return curr;
 };
 
@@ -50,18 +47,12 @@ function validateForm() {
         tip.className = 'tooltip';
         tip.innerHTML = 'Error! The start date must be less than the end date.';
         form.append(tip); 
+        document.querySelector('#container').style.display = 'none';
       };
     } else {
       !document.querySelector('.tooltip') || 
       document.querySelectorAll('.tooltip').forEach(el => el.remove());
-
-      // getValues(fromDate, toDate);
-      // getSelect(select)
+      document.querySelector('#container').style.display = 'block';
     };
   }));
-
-  // select.addEventListener('input', getValues)
-
 };
-
-// validateForm()
