@@ -54,44 +54,41 @@ function parseData(resp) {
 function getValues(arrCurrs) {
   [...arrCurrs].forEach(curr => {
     document.querySelectorAll('.value').forEach(el => el.addEventListener('change', () => {
-      if (fromDate.value != '' && select.value === curr.name) {
-        if (fromDate.valueAsDate.getTime() === toDate.valueAsDate.getTime()) {
-          getOnDate(curr.currs, fromDate);
-        }
-        else if (fromDate.valueAsDate.getFullYear() >= 1991 && fromDate.valueAsDate.getTime() != toDate.valueAsDate.getTime()) {
-          getForYear(curr.currs, fromDate, toDate);
-        };
-      };
-    }));
+      if (fromDate.value != '' 
+      && select.value === curr.name 
+      && fromDate.valueAsDate.getFullYear() >= 1991) {
+        curr.currs.forEach(el => {
+          if (fromDate.valueAsDate.getTime() <= (new Date(el.dateE).getTime()) 
+          && toDate.valueAsDate.getTime() >= (new Date(el.dateS).getTime())) {
+
+            if (fromDate.valueAsDate.getTime() === toDate.valueAsDate.getTime()) {
+              getOnDate(el.id, fromDate);
+            }
+            else if (fromDate.valueAsDate.getFullYear() === toDate.valueAsDate.getFullYear()) {
+              getForYear(el.id, fromDate, toDate);
+            }
+            // else {
+            //   getForPeriod(el, fromDate, toDate);
+            // }
+          }
+          else {
+            document.querySelector('#container').innerHTML = 'There is no exchange rate on the requested date.';
+          }
+        })
+      }
+    }))
   });
   validateForm();
 };
 
-function getOnDate(curr, fromDate) {
-  [...curr].forEach(el => {
-    if (fromDate.valueAsDate.getTime() <= (new Date(el.dateE).getTime()) && 
-    fromDate.valueAsDate.getTime() >= (new Date(el.dateS).getTime())) {
-      fetch(`${baseUrl}rates/${el.id}?ondate=${fromDate}`)
-        .then(response => response.json())
-        .then(prepareDataForChart)
-    } 
-    else {
-      document.querySelector('#container').innerHTML = 'There is no exchange rate on the requested date.';
-    };
-  });
+function getOnDate(id, fromDate) {
+  fetch(`${baseUrl}rates/${id}?ondate=${fromDate.value}`)
+    .then(response => response.json())
+    .then(prepareDataForChart)
 };
 
-function getForYear (curr, fromDate, toDate) {
-  curr.forEach(el => {
-    if (fromDate.valueAsDate.getFullYear() === toDate.valueAsDate.getFullYear()
-    && fromDate.valueAsDate.getTime() >= (new Date(el.dateS).getTime())
-    && toDate.valueAsDate.getTime() <= (new Date(el.dateE).getTime())) {
-      fetch(`${baseUrl}rates/dynamics/${el.id}?startdate=${fromDate.value}&enddate=${toDate.value}`)
-        .then(response => response.json())
-        .then(prepareDataForChart)
-    } 
-    else {
-      document.querySelector('#container').innerHTML = 'There is no exchange rate on the requested date.';
-    };
-  });
+function getForYear (id, fromDate, toDate) {
+  fetch(`${baseUrl}rates/dynamics/${id}?startdate=${fromDate.value}&enddate=${toDate.value}`)
+    .then(response => response.json())
+    .then(prepareDataForChart)
 };

@@ -1,5 +1,4 @@
 const main = document.querySelector('main');
-
 const select = document.querySelector('#curr');
 const fromDate = document.querySelector('#fromDate');
 const toDate = document.querySelector('#toDate');
