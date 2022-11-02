@@ -32,15 +32,15 @@ function addToSelect(curr) {
     select.add(option);
   };
 
-  validateForm();
   getValues(curr);
   return curr;
 };
 
-function validateForm() {
-  document.querySelectorAll('input').forEach(el => el.addEventListener('change', () => {
-    if (fromDate.valueAsDate.getTime() > toDate.valueAsDate.getTime()) {
-      document.querySelector('#container').innerHTML = 'Error! The start date must be less than the end date.'
-    };
-  }));
-};
+
+document.querySelectorAll('input').forEach(el => el.addEventListener('change', () => {
+  if (new Date(fromDate.value).getTime() > new Date(toDate.value).getTime()) {
+    document.querySelector('#container').innerHTML = 'The start date must be less than the end date.'
+  };
+  
+  // document.querySelector('#container').innerHTML = 'There is no exchange rate on the requested date.' 
+}));

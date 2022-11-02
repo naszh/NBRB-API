@@ -4,6 +4,7 @@ fetch(`${baseUrl}currencies`)
   .then(response => response.json())
   .then(parseData)
   .then(addToSelect)
+  .catch(error => console.log(error))
 
 const set = new Set();
 
@@ -52,12 +53,13 @@ function parseData(resp) {
 };
 
 function getValues(arrCurrs) {
-  [...arrCurrs].forEach(curr => {
+  arrCurrs.forEach(curr => {
     document.querySelectorAll('.value').forEach(el => el.addEventListener('change', () => {
       if (fromDate.value != '' 
       && select.value === curr.name 
       && fromDate.valueAsDate.getFullYear() >= 1991) {
-        curr.currs.forEach(el => {
+        console.log(curr)
+        curr.currs.map(el => {
           if (fromDate.valueAsDate.getTime() <= (new Date(el.dateE).getTime()) 
           && toDate.valueAsDate.getTime() >= (new Date(el.dateS).getTime())) {
 
@@ -66,19 +68,16 @@ function getValues(arrCurrs) {
             }
             else if (fromDate.valueAsDate.getFullYear() === toDate.valueAsDate.getFullYear()) {
               getForYear(el.id, fromDate, toDate);
-            }
-            // else {
-            //   getForPeriod(el, fromDate, toDate);
-            // }
-          }
-          else {
-            document.querySelector('#container').innerHTML = 'There is no exchange rate on the requested date.';
+            } 
           }
         })
+
+        if (fromDate.valueAsDate.getFullYear() != toDate.valueAsDate.getFullYear()) {
+          getForPeriod(curr.currs, fromDate, toDate);
+        }
       }
     }))
   });
-  validateForm();
 };
 
 function getOnDate(id, fromDate) {
@@ -87,8 +86,57 @@ function getOnDate(id, fromDate) {
     .then(prepareDataForChart)
 };
 
-function getForYear (id, fromDate, toDate) {
+function getForYear(id, fromDate, toDate) {
   fetch(`${baseUrl}rates/dynamics/${id}?startdate=${fromDate.value}&enddate=${toDate.value}`)
     .then(response => response.json())
     .then(prepareDataForChart)
 };
+
+function getForPeriod(curr, fromDate, toDate) {
+  console.log(curr, fromDate.value, toDate.value);
+
+  const links = [];
+
+
+    let startYear = fromDate.valueAsDate.getFullYear();
+    console.log(startYear);
+
+    let nextYear = fromDate.valueAsDate.getFullYear() + 1;
+    let endYear = toDate.valueAsDate.getFullYear();
+
+    let dateWithoutYear = fromDate.value.slice(5,10);
+    let enddateWithoutYear = toDate.value.slice(5,10);
+
+  for (let i = 0; i < curr.length; i++) {
+    console.log(curr[i])
+    let endYearID = new Date(curr[i].dateE).getFullYear();
+
+    while (nextYear < endYearID) {
+      links.push(`${baseUrl}rates/dynamics/${curr[i].id}?startdate=${startYear}-${dateWithoutYear}&enddate=${nextYear}-${dateWithoutYear}`);
+
+      if(nextYear >= endYear){
+        if (dateWithoutYear<enddateWithoutYear) {
+            startYear=nextYear;
+        }
+
+      links.push(`${baseUrl}rates/dynamics/${curr[i].id}?startdate=${startYear}-${dateWithoutYear}&enddate=${toDate.value}`);
+
+      return links;
+      }
+      startYear=nextYear;
+      nextYear++;
+    } 
+      console.log(links)
+  }
+  
+  let requests = links.map(url => console.log(url));
+
+  // Promise.allSettled(links)
+  // .then((results) => results.forEach((result) => console.log(result.status)));
+  // }
+  // let requests = links.map(url => console.log(url));
+  // console.log(requests)
+  //     Promise.all(requests)
+  //       .then(responses => responses.forEach(response => alert(`${response.url}: ${response.status}`)
+  // ));
+}

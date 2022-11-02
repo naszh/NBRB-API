@@ -1,4 +1,5 @@
 function prepareDataForChart(data) {
+  console.log(data)
   const arrData = [];
   const dataConcat = [];
 
@@ -21,9 +22,7 @@ function prepareDataForChart(data) {
   };
   arrData.push(dataConcat);
 
-  (arrData[0].length === 0) 
-    ? document.querySelector('#container').innerHTML = 'There is no exchange rate on the requested date.' 
-    : addChart(arrData);
+  addChart(arrData);
 };
 
 function addChart(arrData) {
