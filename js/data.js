@@ -13,7 +13,7 @@ function parseData(resp) {
   .map(({
     Cur_ID: id,
     Cur_ParentID: parent,
-    Cur_Name: name,
+    Cur_Name_Eng: name,
     Cur_DateStart: dateS,
     Cur_DateEnd: dateE,
   }) => {
@@ -55,88 +55,71 @@ function parseData(resp) {
 function getValues(arrCurrs) {
   arrCurrs.forEach(curr => {
     document.querySelectorAll('.value').forEach(el => el.addEventListener('change', () => {
-      if (fromDate.value != '' 
-      && select.value === curr.name 
-      && fromDate.valueAsDate.getFullYear() >= 1991) {
-        console.log(curr)
+      if (fromDate.value != '' && select.value === curr.name 
+      && fromDate.valueAsDate.getFullYear() >= 1991 && toDate.value <= today) {
         curr.currs.map(el => {
-          if (fromDate.valueAsDate.getTime() <= (new Date(el.dateE).getTime()) 
-          && toDate.valueAsDate.getTime() >= (new Date(el.dateS).getTime())) {
-
-            if (fromDate.valueAsDate.getTime() === toDate.valueAsDate.getTime()) {
+          if (new Date(fromDate.value).getTime() <= (new Date(el.dateE).getTime()) 
+          && new Date(toDate.value) >= (new Date(el.dateS).getTime())
+          && new Date(fromDate.value).getTime() <= new Date(toDate.value).getTime()) {
+            if (new Date(fromDate.value).getTime() === new Date(toDate.value).getTime()) {
               getOnDate(el.id, fromDate);
-            }
-            else if (fromDate.valueAsDate.getFullYear() === toDate.valueAsDate.getFullYear()) {
-              getForYear(el.id, fromDate, toDate);
-            } 
-          }
-        })
-
-        if (fromDate.valueAsDate.getFullYear() != toDate.valueAsDate.getFullYear()) {
-          getForPeriod(curr.currs, fromDate, toDate);
-        }
-      }
-    }))
+            } else {
+              let links = prepForPeriod(curr.currs, fromDate, toDate);
+              console.log(links)
+              getForPeriod(links);
+            }; 
+          };
+        });
+      };
+    }));
   });
 };
 
 function getOnDate(id, fromDate) {
   fetch(`${baseUrl}rates/${id}?ondate=${fromDate.value}`)
     .then(response => response.json())
-    .then(prepareDataForChart)
+    .then(prepareDataForChart);
 };
 
-function getForYear(id, fromDate, toDate) {
-  fetch(`${baseUrl}rates/dynamics/${id}?startdate=${fromDate.value}&enddate=${toDate.value}`)
-    .then(response => response.json())
-    .then(prepareDataForChart)
+function getForPeriod(links) {
+  let requests = links.map(url => fetch(url));
+  Promise.all(requests)
+    .then(responses => Promise.all(responses.map(r => r.json())))
+    .then(res => prepareDataForChart(res.flat()));
 };
 
-function getForPeriod(curr, fromDate, toDate) {
-  console.log(curr, fromDate.value, toDate.value);
-
+function prepForPeriod(curr, fromDate, toDate) {
   const links = [];
 
+  let startYear = fromDate.valueAsDate.getFullYear();
+  let nextYear = fromDate.valueAsDate.getFullYear() + 1;
+  let endYear = toDate.valueAsDate.getFullYear();
 
-    let startYear = fromDate.valueAsDate.getFullYear();
-    console.log(startYear);
-
-    let nextYear = fromDate.valueAsDate.getFullYear() + 1;
-    let endYear = toDate.valueAsDate.getFullYear();
-
-    let dateWithoutYear = fromDate.value.slice(5,10);
-    let enddateWithoutYear = toDate.value.slice(5,10);
+  let dateWithoutYear = fromDate.value.slice(5, 10);
+  let enddateWithoutYear = toDate.value.slice(5, 10);
 
   for (let i = 0; i < curr.length; i++) {
-    console.log(curr[i])
-    let endYearID = new Date(curr[i].dateE).getFullYear();
+    let endYearCurr = new Date(curr[i].dateE).getFullYear();
 
-    while (nextYear < endYearID) {
-      links.push(`${baseUrl}rates/dynamics/${curr[i].id}?startdate=${startYear}-${dateWithoutYear}&enddate=${nextYear}-${dateWithoutYear}`);
+      while (nextYear < endYearCurr) {
+        links.push(`${baseUrl}rates/dynamics/${curr[i].id}?startdate=${startYear}-${dateWithoutYear}&enddate=${nextYear}-${dateWithoutYear}`);
 
-      if(nextYear >= endYear){
-        if (dateWithoutYear<enddateWithoutYear) {
-            startYear=nextYear;
-        }
+        if (nextYear > endYear) {
+          if (dateWithoutYear < enddateWithoutYear) startYear = nextYear;
+        links.push(`${baseUrl}rates/dynamics/${curr[i].id}?startdate=${startYear}-${dateWithoutYear}&enddate=${toDate.value}`);
+        return links;
+        };
+        startYear = nextYear;
+        nextYear++;
+      };
 
-      links.push(`${baseUrl}rates/dynamics/${curr[i].id}?startdate=${startYear}-${dateWithoutYear}&enddate=${toDate.value}`);
+      console.log(startYear, endYearCurr);
+      console.log(curr[i + 1].dateE.slice(5, 10));
+      console.log(dateWithoutYear)
 
-      return links;
-      }
-      startYear=nextYear;
-      nextYear++;
-    } 
-      console.log(links)
-  }
-  
-  let requests = links.map(url => console.log(url));
-
-  // Promise.allSettled(links)
-  // .then((results) => results.forEach((result) => console.log(result.status)));
-  // }
-  // let requests = links.map(url => console.log(url));
-  // console.log(requests)
-  //     Promise.all(requests)
-  //       .then(responses => responses.forEach(response => alert(`${response.url}: ${response.status}`)
-  // ));
-}
+      if (startYear < endYearCurr){
+      links.push(`${baseUrl}rates/dynamics/${curr[i].id}?startdate=${startYear}-${dateWithoutYear}&enddate=${curr[i].dateE.slice(0, 10)}`);
+      dateWithoutYear=`${curr[i + 1].dateS.slice(5, 10)}`;
+    }
+  };
+};

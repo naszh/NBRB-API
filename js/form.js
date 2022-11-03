@@ -4,6 +4,8 @@ const fromDate = document.querySelector('#fromDate');
 const toDate = document.querySelector('#toDate');
 const form = document.querySelector('form');
 
+let today = new Date().toISOString().slice(0,10);
+
 window.addEventListener('DOMContentLoaded', function () {
   var d = new Date();
   var day = d.getDate(); 
@@ -33,14 +35,14 @@ function addToSelect(curr) {
   };
 
   getValues(curr);
-  return curr;
 };
 
-
-document.querySelectorAll('input').forEach(el => el.addEventListener('change', () => {
-  if (new Date(fromDate.value).getTime() > new Date(toDate.value).getTime()) {
-    document.querySelector('#container').innerHTML = 'The start date must be less than the end date.'
-  };
+(function validateForm() {
+  document.querySelectorAll('input').forEach(el => el.addEventListener('change', () => {
+    if (new Date(fromDate.value).getTime() > new Date(toDate.value).getTime()) 
+      document.querySelector('#chart').innerHTML = 'The start date must be less than the end date.';
   
-  // document.querySelector('#container').innerHTML = 'There is no exchange rate on the requested date.' 
-}));
+    if (toDate.value > today)
+      document.querySelector('#chart').innerHTML = 'There is no exchange rate on the requested date.';
+  }));
+})();

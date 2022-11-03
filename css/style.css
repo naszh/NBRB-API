@@ -1,6 +1,18 @@
-#container {
-  height: 500px;
-  width: 65%;
-  margin: 15px auto;
+body {
+  background-color: aliceblue;
+}
+
+main {
+  padding: 15px;
+}
+
+#chart {
+  width: 60%;
+  margin: 40px auto;
   color: crimson;
+  font-size: 16px;
+}
+
+.value {
+  font-size: 16px;
 }

@@ -2,8 +2,7 @@ function prepareDataForChart(data) {
   console.log(data)
   const arrData = [];
   const dataConcat = [];
-
-  if (Object.keys(data).length === 6) {
+  if (new Date(fromDate.value).getTime() === new Date(toDate.value).getTime()) {
     dataConcat.push(
       [Date.UTC(data.Date.slice(0, 10).slice(0,4),
       data.Date.slice(0, 10).slice(5,7) - 1,
@@ -22,11 +21,11 @@ function prepareDataForChart(data) {
   };
   arrData.push(dataConcat);
 
-  addChart(arrData);
+  addChart(arrData.sort());
 };
 
 function addChart(arrData) {
-  Highcharts.chart('container', {
+  Highcharts.chart('chart', {
     title: {
       text: 'Exchange rate on the requested date',
     },
