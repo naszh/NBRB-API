@@ -1,5 +1,4 @@
 function prepareDataForChart(data) {
-  console.log(data)
   const arrData = [];
   const dataConcat = [];
   if (new Date(fromDate.value).getTime() === new Date(toDate.value).getTime()) {
