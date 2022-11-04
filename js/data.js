@@ -98,28 +98,24 @@ function prepForPeriod(curr, fromDate, toDate) {
   let dateWithoutYear = fromDate.value.slice(5, 10);
   let enddateWithoutYear = toDate.value.slice(5, 10);
 
+  console.log(curr);
   for (let i = 0; i < curr.length; i++) {
     let endYearCurr = new Date(curr[i].dateE).getFullYear();
 
-      while (nextYear < endYearCurr) {
-        links.push(`${baseUrl}rates/dynamics/${curr[i].id}?startdate=${startYear}-${dateWithoutYear}&enddate=${nextYear}-${dateWithoutYear}`);
-
-        if (nextYear > endYear) {
-          if (dateWithoutYear < enddateWithoutYear) startYear = nextYear;
+    while ((nextYear < endYearCurr) || (nextYear === endYearCurr && new Date(nextYear+'-'+dateWithoutYear).getTime() < new Date(curr[i].dateE).getTime())) {
+      if ((nextYear > endYear) || (nextYear === endYear && dateWithoutYear > enddateWithoutYear)) {
         links.push(`${baseUrl}rates/dynamics/${curr[i].id}?startdate=${startYear}-${dateWithoutYear}&enddate=${toDate.value}`);
-        return links;
-        };
-        startYear = nextYear;
-        nextYear++;
+      return links;
       };
+      links.push(`${baseUrl}rates/dynamics/${curr[i].id}?startdate=${startYear}-${dateWithoutYear}&enddate=${nextYear}-${dateWithoutYear}`);
 
-      console.log(startYear, endYearCurr);
-      console.log(curr[i + 1].dateE.slice(5, 10));
-      console.log(dateWithoutYear)
+      startYear = nextYear;
+      nextYear++;
+    };
 
-      if (startYear < endYearCurr){
+    if ((startYear === endYearCurr && dateWithoutYear < curr[i].dateE.slice(5, 10))  || (startYear < endYearCurr && new Date(nextYear+'-'+dateWithoutYear).getTime() >= new Date(curr[i].dateE).getTime())) {
       links.push(`${baseUrl}rates/dynamics/${curr[i].id}?startdate=${startYear}-${dateWithoutYear}&enddate=${curr[i].dateE.slice(0, 10)}`);
-      dateWithoutYear=`${curr[i + 1].dateS.slice(5, 10)}`;
-    }
+      dateWithoutYear=`${curr[i + 1].dateS.slice(5, 10)}`;startYear=curr[i + 1].dateS.slice(0, 4);
+    };
   };
 };
