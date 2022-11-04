@@ -1,3 +1,13 @@
+*, *::before, *::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  min-height: 100%;
+}
+
 body {
   background-color: aliceblue;
 }
@@ -6,13 +16,91 @@ main {
   padding: 15px;
 }
 
+section {
+  display: flex;
+  margin-top: 50px;
+  height: 450px;
+}
+
+form {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
 #chart {
-  width: 60%;
-  margin: 40px auto;
+  width: 55%;
   color: crimson;
+  margin-left: 25px;
   font-size: 16px;
+  text-align: center;
 }
 
 .value {
   font-size: 16px;
+}
+
+#fromDate, #toDate {
+  background-color: #0080ff;
+  padding: 7px;
+  color: #fff;
+  border: none;
+  outline: none;
+  border-radius: 7px;
+}
+
+::-webkit-calendar-picker-indicator {
+  background-color: #fff;
+  padding: 5px;
+  margin-left: 15px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+#curr {
+  border: 2px solid #0080ff;
+  padding: 10px;
+  outline: none;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+#curr > option {
+  cursor: pointer;
+}
+
+.widget {
+  display: inline-grid;
+  grid-template-rows: repeat(4, 1fr);
+  gap: 20px;
+  padding: 15px;
+
+  border-radius: 15px;
+  color: #fff;
+  font-weight: 700;
+}
+
+.widget > div {
+  display: inline-grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+#widget-name {
+  font-size: 18px;
+  padding: 5px;
+}
+
+@media (max-width: 768px) {
+  section {
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+    justify-content: center;
+  }
+
+  #chart {
+    margin-left: 0;
+    width: 100%;
+  }
 }

@@ -59,12 +59,7 @@ function getValues(arrCurrs) {
       && fromDate.valueAsDate.getFullYear() >= 1991) {
         if (new Date(fromDate.value).getTime() <= new Date(toDate.value).getTime()) {
           if (new Date(fromDate.value).getTime() === new Date(toDate.value).getTime()) {
-            curr.currs.map(el => {
-              if (new Date(fromDate.value).getTime() <= (new Date(el.dateE).getTime()) 
-              && new Date(toDate.value) >= (new Date(el.dateS).getTime())) {
-                  getOnDate(el.id, fromDate);
-              }
-            })
+            getOnDate(curr, fromDate);
           } else {
             let links = splitLinks(curr.currs, fromDate, toDate);
             getForPeriod(links);
@@ -75,10 +70,15 @@ function getValues(arrCurrs) {
   });
 };
 
-function getOnDate(id, fromDate) {
-  fetch(`${baseUrl}rates/${id}?ondate=${fromDate.value}`)
-    .then(response => response.json())
-    .then(prepareDataForChart);
+function getOnDate(curr, fromDate) {
+  curr.currs.map(el => {
+    if (new Date(fromDate.value).getTime() <= new Date(el.dateE).getTime()
+    && new Date(toDate.value) >= new Date(el.dateS).getTime()) {
+      fetch(`${baseUrl}rates/${el.id}?ondate=${fromDate.value}`)
+      .then(response => response.json())
+      .then(prepareDataForChart);
+    };
+  });
 };
 
 function getForPeriod(links) {

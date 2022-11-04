@@ -35,6 +35,7 @@ function addToSelect(curr) {
   };
 
   getValues(curr);
+  generateWidgetVal(curr);
 };
 
 (function validateForm() {
