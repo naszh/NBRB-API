@@ -46,5 +46,5 @@ function addToWidget(rate, scale, curr) {
                             <p>${rate}</p>`;
   
   document.querySelector('.widget').append(currencyExch);
-  document.querySelector('.widget').style.backgroundColor = '#0080ff';
+  document.querySelector('.widget').style.backgroundColor = 'rgb(89, 147, 197)';
 };

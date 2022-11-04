@@ -9,7 +9,7 @@ html, body {
 }
 
 body {
-  background-color: aliceblue;
+  background-color: #dae3eb80;
 }
 
 main {
@@ -34,6 +34,7 @@ form {
   margin-left: 25px;
   font-size: 16px;
   text-align: center;
+  border-radius: 15px;
 }
 
 .value {
@@ -41,7 +42,7 @@ form {
 }
 
 #fromDate, #toDate {
-  background-color: #0080ff;
+  background-color: rgb(89, 147, 197);
   padding: 7px;
   color: #fff;
   border: none;
@@ -58,7 +59,7 @@ form {
 }
 
 #curr {
-  border: 2px solid #0080ff;
+  border: 2px solid rgb(89, 147, 197);
   padding: 10px;
   outline: none;
   border-radius: 7px;

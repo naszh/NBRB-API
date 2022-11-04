@@ -63,7 +63,7 @@ function getValues(arrCurrs) {
           } else {
             let links = splitLinks(curr.currs, fromDate, toDate);
             getForPeriod(links);
-          }; 
+          };
         };
       };
     }));
@@ -82,7 +82,11 @@ function getOnDate(curr, fromDate) {
 };
 
 function getForPeriod(links) {
-  let requests = links.map(url => fetch(url));
+  let requests;
+  !links
+    ? document.querySelector('#chart').innerHTML = 'There is no exchange rate on the requested date.'
+    : requests = links.map(url => fetch(url));
+
   Promise.all(requests)
     .then(responses => Promise.all(responses.map(r => r.json())))
     .then(res => prepareDataForChart(res.flat()));
