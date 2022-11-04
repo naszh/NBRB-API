@@ -4,7 +4,7 @@ const fromDate = document.querySelector('#fromDate');
 const toDate = document.querySelector('#toDate');
 const form = document.querySelector('form');
 
-let today = new Date().toISOString().slice(0,10);
+let today = new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 10);
 
 window.addEventListener('DOMContentLoaded', function () {
   var d = new Date();
