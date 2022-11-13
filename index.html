@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>NBRB API</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/style.css">
+	<title>NBRB API</title>
 </head>
 <body>
-    <main>
-        <form action="#" lang="en">
-            <select id="curr" class='value'>
-                <option>select currency</option>
-            </select>
-
-            <input type="date" name="from" id="fromDate" class='value' min="1991-01-01">
-            <input type="date" name="to" id="toDate" class='value' min="1991-01-01">
-        </form>
-        <section>
-            <div class="wrapper">
-                <div class="widget">
-                    <p id="widget-name"></p>
-                </div>
-            </div>
-            <div id="chart"></div>
-        </section>
-    </main>
-    <script src="/js/form.js"></script>
-    <script src="/js/widget.js"></script>
-    <script src="/js/data.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-    <script src="/js/chart.js"></script>
+	<main>
+		<form action="#" lang="en">
+			<select id="curr" class='value'>
+				<option>select currency</option>
+			</select>
+			<input type="date" name="from" id="fromDate" class='value' min="1991-01-01">
+			<input type="date" name="to" id="toDate" class='value' min="1991-01-01">
+		</form>
+		<section>
+			<div class="wrapper">
+				<div class="widget">
+					<p id="widget-name"></p>
+				</div>
+			</div>
+			<div id="chart"></div>
+		</section>
+	</main>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+	<script src="/js/form.js"></script>
+	<script src="/js/widget.js"></script>
+	<script src="/js/data.js"></script>
+	<script src="/js/chart.js"></script>
 </body>
 </html>
