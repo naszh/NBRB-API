@@ -50,9 +50,7 @@ function parseData(resp) {
     el.reduce((acc, { name, id, dateS, dateE }) => {
       if (!acc.name) acc.name = name;
       if (!acc.currs) acc.currs = [];
-
       acc.currs.push({ id, dateS, dateE });
-
       return acc;
     }, {})
   );
@@ -65,7 +63,7 @@ function getValues(arrCurrs) {
         if (
           fromDate.value != '' &&
           select.value === curr.name &&
-          toDate.value <= today &&
+          toDate.value <= getToday() &&
           fromDate.valueAsDate.getFullYear() >= 1991
         ) {
           if (
@@ -96,7 +94,7 @@ function getOnDate(curr, fromDate) {
     ) {
       fetch(`${baseUrl}/rates/${el.id}?ondate=${fromDate.value}`)
         .then(response => response.json())
-        .then(prepareDataForChart);
+        .then(drawChart);
     }
   });
 }
@@ -110,7 +108,7 @@ function getForPeriod(links) {
 
   Promise.all(requests)
     .then(responses => Promise.all(responses.map(r => r.json())))
-    .then(res => prepareDataForChart(res.flat()));
+    .then(res => drawChart(res.flat()));
 }
 
 function splitLinks(curr, fromDate, toDate) {
