@@ -7,6 +7,7 @@ fetch(`${baseUrl}/currencies`)
 	.catch(error => console.log(error));
 
 const set = new Set();
+console.log();
 
 function parseData(resp) {
 	const obj = resp
