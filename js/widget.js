@@ -1,7 +1,7 @@
 function generateWidgetVal(curr) {
 	const currNames = ['US Dollar', 'EURO', 'Russian Ruble', 'Polish Zloty'];
 	const currForWidget = curr.filter(el => {
-		return currNames.includes(el.name);
+		if (currNames.includes(el.name)) return el;
 	});
 
 	getDataWidget(currForWidget, getToday());
