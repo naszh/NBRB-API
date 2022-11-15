@@ -1,7 +1,7 @@
 function prepareDataForChart(data, fromVal, toVal) {
   const arrData = [];
   const dataConcat = [];
-  if (new Date(fromVal).getTime() === new Date(toVal).getTime()) {
+  if (fromVal === toVal) {
     dataConcat.push([
       Date.UTC(
         data.Date.slice(0, 4),

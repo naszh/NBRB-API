@@ -32,11 +32,7 @@ window.addEventListener(
 );
 
 function addToSelect(curr) {
-  const arr = [];
-  for (let el of curr) {
-    arr.push(el.name);
-  }
-  arr.sort();
+  const arr = curr.map(el => el.name).sort();
 
   for (let name of arr) {
     const option = document.createElement('option');
