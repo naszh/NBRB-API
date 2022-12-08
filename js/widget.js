@@ -1,18 +1,8 @@
 function generateWidgetVal(curr) {
-	const currForWidget = [];
-
-	curr.forEach(el => {
-		switch (el.name) {
-			case 'US Dollar':
-			case 'EURO':
-			case 'Russian Ruble':
-			case 'Polish Zloty':
-				currForWidget.push(el);
-				break;
-		}
-		return currForWidget;
+	const currNames = ['US Dollar', 'EURO', 'Russian Ruble', 'Polish Zloty'];
+	const currForWidget = curr.filter(el => {
+		return currNames.includes(el.name);
 	});
-
 	getDataWidget(currForWidget, getToday());
 }
 
